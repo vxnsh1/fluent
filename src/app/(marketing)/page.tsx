@@ -15,7 +15,7 @@ export default function Home() {
   return (
     <div className="max-w-[988px] mx-auto flex-1 w-full flex flex-col lg:flex-row items-center justify-center p-4 gap-10">
 
-      <div className="relative w-60 h-40 lg:w-[624px] lg:h-[324px]">
+      <div className="relative w-80 h-45 lg:w-[424px] lg:h-56">
         <Image src="/hero.svg" alt="Hero Image" fill />
       </div>
 
@@ -26,7 +26,7 @@ export default function Home() {
           Learn, practice and master new languages with Fluent.
         </h1>
 
-        <div className="w-full flex flex-col gap-3">
+        <div className="flex flex-col items-center gap-y-3 max-w-[330px] w-full">
 
           <ClerkLoading>
             <Loader className="h-5 w-5 text-muted-foreground animate-spin" />
