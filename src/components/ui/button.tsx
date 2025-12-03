@@ -9,7 +9,7 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        default: "bg-[#F4F4F8] text-black border-slate-500 border-2 border-b-4 active:border-b-2 hover:bg-[#E6E6EA] text-gray-500 transition-all duration-100",
+        default: "bg-[#F4F4F8] text-black border-[#102E4A] border-2 border-b-4 active:border-b-2 hover:bg-[#E6E6EA] text-gray-500 transition-all duration-100",
 
         primary: "bg-[#2AB7CA] text-primary-foreground hover:bg-[#249DAE] border-sky-900 border-b-4 active:border-b-0 transititon-all duration-100",
 
@@ -29,9 +29,9 @@ const buttonVariants = cva(
 
         ghost: "bg-transparent text-slate-500 border-transparent border-0 hover:bg-slate-100",
 
-        sidebar: "bg-transparent text-slate-500 border-2 border-transparent hover:bg-slate-100 transition-none",
+        sidebar: "bg-transparent text-slate-500 border-2 border-transparent hover:bg-slate-100 transition-colors duration-300",
 
-        sidebarOutline: "bg-[#A4DEF9]/60 text-[#3AB8F2] border-sky-300 border-2 hover:bg-[#A4DEF9]/80 transition-none",
+        sidebarOutline: "bg-[#0C090D]/60 text-white border-gray-700 border-2 hover:bg-[#0C090D]/80 transition-colors duration-300",
       },
       size: {
         default: "h-11 px-4 py-2 has-[>svg]:px-3",
