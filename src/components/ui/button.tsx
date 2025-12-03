@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer uppercase tracking-wide",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-xl text-sm font-bold transition-all disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg:not([class*='size-'])]:size-4 shrink-0 [&_svg]:shrink-0 outline focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive cursor-pointer uppercase tracking-wide",
   {
     variants: {
       variant: {
@@ -13,9 +13,9 @@ const buttonVariants = cva(
 
         primary: "bg-[#2AB7CA] text-primary-foreground hover:bg-[#249DAE] border-sky-900 border-b-4 active:border-b-0 transititon-all duration-100",
 
-        primaryOutline: "bg-white text-[#2AB7CA] hover:bg-slate-100 transition-all duration-100",
+        primaryOutline: "text-[#909590] hover:bg-[#2C302E] hover:text-white transition-all duration-300",
 
-        secondary: "bg-[#09E85E] text-primary-foreground hover:bg-[#07CA52] border-green-900 border-b-4 active:border-b-0 transititon-all duration-100",
+        secondary: "bg-[#FAFDF6] text-primary-background hover:bg-[#2D2A32] hover:text-primary-foreground border-gray-900 border-b-4 hover:border-gray-500 active:border-b-0 transititon-all duration-300",
 
         secondaryOutline: "bg-white text-[#09E85E] hover:bg-slate-100 transition-all duration-100",
 
