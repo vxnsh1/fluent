@@ -24,7 +24,10 @@ export const List = ({ courses, activeCourseId }: Props) => {
 
     startTransition(() => {
       upsertuserProgress(id)
-      .catch(() => toast.error("Something went wrong"))
+        .catch((err) => {
+          if (err instanceof Error && err.message.includes("NEXT_REDIRECT")) return;
+          toast.error("Something went wrong");
+        });
     });
   };
 

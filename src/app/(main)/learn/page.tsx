@@ -13,20 +13,20 @@ const LearnPage = async () => {
     userProgressData
   ]);
 
-  if(!userProgress || !userProgress.activeCourseId) {
+  if(!userProgress || !userProgress.activeCourse) {
     redirect("/courses");
   }
 
   return ( // removed flex-row-reverse idk why it was there
     <div className="flex gap-12 px-6">
       <FeedWrapper>
-        <Header title="Spanish" />
+        <Header title={userProgress.activeCourse.title} />
       </FeedWrapper>
       <StickyWrapper>
         <UserProgress 
-          activeCourse={{ title: "Spanish", imageSrc:"/india.svg"}}
-          hearts={5}
-          points={100}
+          activeCourse={userProgress.activeCourse}
+          hearts={userProgress.hearts}
+          points={userProgress.points}
           hasActiveSubscription={false}
         />
       </StickyWrapper>
