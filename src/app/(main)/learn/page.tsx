@@ -2,8 +2,21 @@ import FeedWrapper from "@/components/feedwrapper"
 import { StickyWrapper } from "@/components/stickywrapper"
 import { Header } from "./header";
 import { UserProgress } from "@/components/userprogress";
+import { getUserProgress } from "../../../../db/queries";
+import { redirect } from "next/navigation";
 
-const LearnPage = () => {
+const LearnPage = async () => {
+  const userProgressData = getUserProgress();
+  const [
+    userProgress,
+  ] = await Promise.all([
+    userProgressData
+  ]);
+
+  if(!userProgress || !userProgress.activeCourseId) {
+    redirect("/courses");
+  }
+
   return ( // removed flex-row-reverse idk why it was there
     <div className="flex gap-12 px-6">
       <FeedWrapper>
