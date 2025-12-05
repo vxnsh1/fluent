@@ -2,15 +2,18 @@ import FeedWrapper from "@/components/feedwrapper"
 import { StickyWrapper } from "@/components/stickywrapper"
 import { Header } from "./header";
 import { UserProgress } from "@/components/userprogress";
-import { getUserProgress } from "../../../../db/queries";
+import { getUnits, getUserProgress } from "../../../../db/queries";
 import { redirect } from "next/navigation";
 
 const LearnPage = async () => {
   const userProgressData = getUserProgress();
+  const unitsData = getUnits();
   const [
     userProgress,
+    units,
   ] = await Promise.all([
-    userProgressData
+    userProgressData,
+    unitsData,
   ]);
 
   if(!userProgress || !userProgress.activeCourse) {
@@ -21,6 +24,11 @@ const LearnPage = async () => {
     <div className="flex gap-12 px-6">
       <FeedWrapper>
         <Header title={userProgress.activeCourse.title} />
+        {units.map((unit) => (
+          <div key={unit.id} className="mb-10">
+              {JSON.stringify(unit)}
+          </div>
+        ))}
       </FeedWrapper>
       <StickyWrapper>
         <UserProgress 
