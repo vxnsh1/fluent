@@ -11,7 +11,7 @@ const MainLayout = ({children}: Props) => {
     <HamburgerMenu />
     <Sidebar className="hidden lg:flex"/>
       <main className="h-full lg:ml-64 pt-12 lg:p-2">
-        <div className="max-w-[1056px] mx-auto h-full">
+        <div className="max-w-264 mx-auto h-full">
           {children}
         </div>
       </main>
