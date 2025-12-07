@@ -31,7 +31,7 @@ export const Unit = ({ id, order, description, title, lessons, activeLesson, act
                             id={lesson.id}
                             index={idx}
                             totalCount={lessons.length - 1}
-                            current={true || isCurrent}
+                            current={isCurrent}
                             locked={isLocked}
                             percentage={activeLessonPercentage}
                         />
