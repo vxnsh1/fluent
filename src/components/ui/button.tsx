@@ -9,6 +9,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
+        locked: "bg-neutral-200 text-primary-foreground hover:bg-neutral-200/90 border-neutral-400 border-b-4 active:border-b-0",
+
         default: "bg-[#F4F4F8] text-black border-[#102E4A] border-2 border-b-4 active:border-b-2 hover:bg-[#E6E6EA] text-gray-500 transition-all duration-100",
 
         primary: "bg-[#2AB7CA] text-primary-foreground hover:bg-[#249DAE] border-sky-900 border-b-4 active:border-b-0 transititon-all duration-100",
