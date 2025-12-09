@@ -49,6 +49,11 @@ export const getUnits = cache(async () => {
 
     const normalizedData = data.map((unit) => {
         const lessonsWithCompletedStatus = unit.lessons.map((lesson) => {
+            if (
+                lesson.challenges.length === 0
+            ) {
+                return {...lesson, completed: false}
+            };
             const allCompletedChallenges = lesson.challenges.every((challenge) => {
                 return challenge.challengeProgress
                     && challenge.challengeProgress.length > 0
@@ -110,19 +115,19 @@ export const getCourseProgress = cache(async () => {
 });
 
 export const getLesson = cache(async (id?: number) => {
-    const {userId} = await auth();
-    if(!userId) return null;
+    const { userId } = await auth();
+    if (!userId) return null;
     const courseProgress = await getCourseProgress();
 
-    const lessonId =   id || courseProgress?.activeLessonId;
+    const lessonId = id || courseProgress?.activeLessonId;
 
-    if(!lessonId) return null;
+    if (!lessonId) return null;
 
     const data = await db.query.lessons.findFirst({
         where: eq(lessons.id, lessonId),
         with: {
             challenges: {
-                orderBy: (challenges, {asc}) => [asc(challenges.order)],
+                orderBy: (challenges, { asc }) => [asc(challenges.order)],
                 with: {
                     challengeOptions: true,
                     challengeProgress: {
@@ -133,29 +138,29 @@ export const getLesson = cache(async (id?: number) => {
         },
     });
 
-    if(!data || !data.challenges){
+    if (!data || !data.challenges) {
         return null;
     }
 
     const normalizedChallenges = data.challenges.map((challenge) => {
-        const completed = challenge.challengeProgress 
-        && challenge.challengeProgress.length > 0
-        && challenge.challengeProgress.every((progress) => progress.completed);
+        const completed = challenge.challengeProgress
+            && challenge.challengeProgress.length > 0
+            && challenge.challengeProgress.every((progress) => progress.completed);
 
-        return {...challenge, completed};
+        return { ...challenge, completed };
     });
 
-    return {...data, challenges: normalizedChallenges}
+    return { ...data, challenges: normalizedChallenges }
 });
 
 export const getLessonPercentage = cache(async () => {
     const courseProgress = await getCourseProgress()
 
-    if(!courseProgress?.activeLessonId) return 0;
+    if (!courseProgress?.activeLessonId) return 0;
 
     const lesson = await getLesson(courseProgress.activeLessonId);
 
-    if(!lesson) return 0;
+    if (!lesson) return 0;
 
     const completedChallenges = lesson.challenges.filter((challenge) => challenge.completed);
     const percentage = Math.round(
