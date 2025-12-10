@@ -115,10 +115,10 @@ const main = async () => {
             {
                 id: 3,
                 challengeId: 1,
-                imgSrc: "/dog.svg",
+                imgSrc: "/bear.svg",
                 correct: false,
-                text: "Kutta",
-                audioSrc: "/india_dog.mp3",
+                text: "Bhalu",
+                audioSrc: "/india_bear.mp3",
             },
         ])
 
