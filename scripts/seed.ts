@@ -101,7 +101,7 @@ const main = async () => {
                 challengeId: 1,
                 imgSrc: "/man.svg",
                 correct: true,
-                text: "Aadmi",
+                text: "आदमी",
                 audioSrc: "/india_man.mp3",
             },
             {
@@ -109,7 +109,7 @@ const main = async () => {
                 challengeId: 1,
                 imgSrc: "/woman.svg",
                 correct: false,
-                text: "Aurat",
+                text: "औरत",
                 audioSrc: "/india_woman.mp3",
             },
             {
@@ -117,7 +117,7 @@ const main = async () => {
                 challengeId: 1,
                 imgSrc: "/bear.svg",
                 correct: false,
-                text: "Bhalu",
+                text: "भालू",
                 audioSrc: "/india_bear.mp3",
             },
         ])
