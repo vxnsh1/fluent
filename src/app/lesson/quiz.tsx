@@ -2,6 +2,7 @@
 
 import { useState, useTransition } from "react";
 import { challengeOptions, challenges } from "../../../db/schema";
+import Confetti from "react-confetti"
 import { Header } from "./header";
 import { QuestionBubble } from "./questionbubble";
 import { Challenge } from "./challenge";
@@ -9,6 +10,10 @@ import { Footer } from "./footer";
 import { upsertChallengeProgress } from "../../../actions/challengeprogress";
 import { toast } from "sonner";
 import { reduceHearts } from "../../../actions/userprogress";
+import { useAudio } from "react-use";
+import Image from "next/image";
+import { Result } from "./result";
+import { useRouter } from "next/navigation";
 
 type Props = {
   initialPercentage: number;
@@ -29,7 +34,17 @@ export const Quiz = ({
   initialLessonChallenges,
   userSubscription,
 }: Props) => {
+  const router = useRouter();
+  const [finishAudio] = useAudio({ src: "/finish.mp3", autoPlay: true});
+  const [correctAudioElement, correctAudioState, correctControls] = useAudio({
+    src: "/correct.mp3",
+  });
+  const [wrongAudioElement, wrongAudioState, wrongControls] = useAudio({
+    src: "/wrong.mp3",
+  });
+
   const [pending, startTransition] = useTransition();
+  const [lessonId] = useState(initialLessonId);
   const [hearts, setHearts] = useState(initialHearts);
   const [percentage, setPercentage] = useState(initialPercentage);
   const [challenges] = useState(initialLessonChallenges);
@@ -44,6 +59,46 @@ export const Quiz = ({
   const [status, setStatus] = useState<"correct" | "wrong" | "none">("none");
 
   const challenge = challenges[activeIndex];
+
+  if (!challenge) {
+    return (
+      <>
+        {finishAudio}
+        <div className="flex flex-col gap-y-4 lg:gap-y-8 max-w-lg mx-auto text-center items-center justify-center h-[80vh] lg:h-[69vh]">
+          <Image
+            src="/finish.svg"
+            alt="Finish"
+            width={100}
+            height={100}
+            className="block lg:hidden"
+          />
+
+          <h1 className="text-xl lg:text-3xl font-bold text-neutral-700">
+            Well done! <br />
+            This lesson is completed.
+          </h1>
+          <div className="flex items-center gap-x-4 w-full">
+              <Result 
+                variant="points"
+                value={challenges.length * 10}
+              />
+              <Result 
+                variant="hearts"
+                value={hearts}
+              />
+          </div>
+        </div>
+
+        <Footer 
+          lessonId={lessonId}
+          status="completed"
+         onCheck={() => router.push("/learn")} 
+        />
+
+      </>
+    );
+  }
+
   const title =
     challenge.type === "ASSIST"
       ? "Select the correct meaning"
@@ -56,7 +111,6 @@ export const Quiz = ({
 
   const onSelect = (id: number) => {
     if (status !== "none") return;
-
     setSelectedOption(id);
   };
 
@@ -82,45 +136,48 @@ export const Quiz = ({
 
     if (correctOption.id === selectedOption) {
       startTransition(() => {
-        upsertChallengeProgress(challenge.id).then((response) => {
-          if (response?.error === "hearts") {
-            console.error("Missing hearts");
-            return;
-          }
+        upsertChallengeProgress(challenge.id)
+          .then((response) => {
+            if (response?.error === "hearts") {
+              console.error("Missing hearts");
+              return;
+            }
 
-          setStatus("correct");
-          setPercentage((prev) => prev + 100 / challenges.length);
+            correctControls.play();
+            setStatus("correct");
+            setPercentage((prev) => prev + 100 / challenges.length);
 
-          if (initialPercentage === 100) {
-            setHearts((prev) => Math.min(prev + 1, 5));
-          }
-        })
-        .catch(() => 
-          toast.error("Something went wrong. Please try again."))
+            if (initialPercentage === 100) {
+              setHearts((prev) => Math.min(prev + 1, 5));
+            }
+          })
+          .catch(() => toast.error("Something went wrong. Please try again."));
+      });
+    } else {
+      startTransition(() => {
+        reduceHearts(challenge.id)
+          .then((response) => {
+            if (response?.error === "hearts") {
+              console.error("Missing hearts");
+              return;
+            }
+
+            wrongControls.play();
+            setStatus("wrong");
+
+            if (!response?.error) {
+              setHearts((prev) => Math.max(prev - 1, 0));
+            }
+          })
+          .catch(() => toast.error("Something went wrong. Please try again."));
       });
     }
-    else {
-      startTransition(() => {
-        reduceHearts(challenge.id).then((response) => {
-          if (response?.error === "hearts"){
-            console.error("Missing hearts");
-            return;
-          }
-
-          setStatus("wrong");
-
-          if(!response?.error){
-            setHearts((prev) => Math.max(prev - 1, 0));
-          }
-        })
-        .catch(() => 
-          toast.error("Something went wrong. Please try again."))
-      });
-    };
   };
 
   return (
     <>
+      {correctAudioElement}
+      {wrongAudioElement}
       <Header
         hearts={hearts}
         percentage={percentage}
@@ -148,7 +205,11 @@ export const Quiz = ({
           </div>
         </div>
       </div>
-      <Footer disabled={pending || !selectedOption} status={status} onCheck={onContinue} />
+      <Footer
+        disabled={pending || !selectedOption}
+        status={status}
+        onCheck={onContinue}
+      />
     </>
   );
 };

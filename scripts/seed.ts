@@ -11,9 +11,9 @@ const main = async () => {
   try {
     console.log("Seeding database...");
 
-    // -----------------------------
-    // 1. CLEAR DATA (Correct FK order)
-    // -----------------------------
+    // -------------------------------------
+    // 1. CLEAR DATA 
+    // -------------------------------------
     await db.delete(schema.challengeOptions);
     await db.delete(schema.challengeProgress);
     await db.delete(schema.challenges);
@@ -22,35 +22,19 @@ const main = async () => {
     await db.delete(schema.userProgress);
     await db.delete(schema.courses);
 
-    // -----------------------------
+    // -------------------------------------
     // 2. SEED COURSES
-    // -----------------------------
+    // -------------------------------------
     await db.insert(schema.courses).values([
-      {
-        id: 1,
-        title: "Hindi",
-        imageSrc: "/india.svg",
-      },
-      {
-        id: 2,
-        title: "Japanese",
-        imageSrc: "/japan.svg",
-      },
-      {
-        id: 3,
-        title: "French",
-        imageSrc: "/france.svg",
-      },
-      {
-        id: 4,
-        title: "Spanish",
-        imageSrc: "/spain.svg",
-      },
+      { id: 1, title: "Hindi", imageSrc: "/india.svg" },
+      { id: 2, title: "Japanese", imageSrc: "/japan.svg" },
+      { id: 3, title: "French", imageSrc: "/france.svg" },
+      { id: 4, title: "Spanish", imageSrc: "/spain.svg" },
     ]);
 
-    // -----------------------------
+    // -------------------------------------
     // 3. SEED UNITS
-    // -----------------------------
+    // -------------------------------------
     await db.insert(schema.units).values([
       {
         id: 1,
@@ -61,46 +45,30 @@ const main = async () => {
       },
     ]);
 
-    // -----------------------------
+    // -------------------------------------
     // 4. SEED LESSONS
-    // -----------------------------
+    // -------------------------------------
     await db.insert(schema.lessons).values([
-      {
-        id: 1,
-        unitId: 1,
-        order: 1,
-        title: "Nouns",
-      },
-      {
-        id: 2,
-        unitId: 1,
-        order: 2,
-        title: "Verbs",
-      },
-      {
-        id: 3,
-        unitId: 1,
-        order: 3,
-        title: "Nouns",
-      },
-      {
-        id: 4,
-        unitId: 1,
-        order: 4,
-        title: "Nouns",
-      },
-      {
-        id: 5,
-        unitId: 1,
-        order: 5,
-        title: "Nouns",
-      },
+      // Original lesson
+      { id: 1, unitId: 1, order: 1, title: "Nouns" },
+
+      // CLONED lesson (exact same content)
+      { id: 2, unitId: 1, order: 2, title: "Verbs" },
+
+      { id: 3, unitId: 1, order: 3, title: "Verbs" },
+
+      { id: 4, unitId: 1, order: 4, title: "Verbs" },
+
+      { id: 5, unitId: 1, order: 5, title: "Verbs" },
+
+      { id: 6, unitId: 1, order: 6, title: "Verbs" },
     ]);
 
-    // -----------------------------
-    // 5. SEED CHALLENGES (IDs added)
-    // -----------------------------
+    // -------------------------------------
+    // 5. SEED CHALLENGES
+    // -------------------------------------
     await db.insert(schema.challenges).values([
+      // ---- LESSON 1 ----
       {
         id: 1,
         lessonId: 1,
@@ -122,12 +90,39 @@ const main = async () => {
         order: 3,
         question: 'Which one of these is "the bear"?',
       },
+
+      // ---- LESSON 2 ----
+      {
+        id: 4,
+        lessonId: 2,
+        type: "SELECT",
+        order: 1,
+        question: 'Which one of these is "the man"?',
+      },
+      {
+        id: 5,
+        lessonId: 2,
+        type: "ASSIST",
+        order: 2,
+        question: '"the woman"?',
+      },
+      {
+        id: 6,
+        lessonId: 2,
+        type: "SELECT",
+        order: 3,
+        question: 'Which one of these is "the bear"?',
+      },
     ]);
 
-    // -----------------------------
+    // -------------------------------------
     // 6. SEED CHALLENGE OPTIONS
-    // -----------------------------
+    // -------------------------------------
     await db.insert(schema.challengeOptions).values([
+      // --------------------------
+      // LESSON 1 OPTIONS
+      // --------------------------
+
       // Challenge 1
       {
         challengeId: 1,
@@ -188,6 +183,76 @@ const main = async () => {
       },
       {
         challengeId: 3,
+        imgSrc: "/bear.svg",
+        correct: true,
+        text: "भालू",
+        audioSrc: "/india_bear.mp3",
+      },
+
+      // --------------------------
+      // LESSON 2 OPTIONS
+      // --------------------------
+
+      // Challenge 4
+      {
+        challengeId: 4,
+        imgSrc: "/man.svg",
+        correct: true,
+        text: "आदमी",
+        audioSrc: "/india_man.mp3",
+      },
+      {
+        challengeId: 4,
+        imgSrc: "/woman.svg",
+        correct: false,
+        text: "औरत",
+        audioSrc: "/india_woman.mp3",
+      },
+      {
+        challengeId: 4,
+        imgSrc: "/bear.svg",
+        correct: false,
+        text: "भालू",
+        audioSrc: "/india_bear.mp3",
+      },
+
+      // Challenge 5
+      {
+        challengeId: 5,
+        correct: false,
+        text: "आदमी",
+        audioSrc: "/india_man.mp3",
+      },
+      {
+        challengeId: 5,
+        correct: true,
+        text: "औरत",
+        audioSrc: "/india_woman.mp3",
+      },
+      {
+        challengeId: 5,
+        correct: false,
+        text: "भालू",
+        audioSrc: "/india_bear.mp3",
+      },
+
+      // Challenge 6
+      {
+        challengeId: 6,
+        imgSrc: "/man.svg",
+        correct: false,
+        text: "आदमी",
+        audioSrc: "/india_man.mp3",
+      },
+      {
+        challengeId: 6,
+        imgSrc: "/woman.svg",
+        correct: false,
+        text: "औरत",
+        audioSrc: "/india_woman.mp3",
+      },
+      {
+        challengeId: 6,
         imgSrc: "/bear.svg",
         correct: true,
         text: "भालू",
