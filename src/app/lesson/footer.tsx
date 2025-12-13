@@ -15,7 +15,7 @@ export const Footer = ({ onCheck, status, disabled, lessonId }: Props) => {
     const isMobile = useMedia("(max-width: 1024px)");
     return (
         <footer className={cn(
-            "lg:h-56 h-35 border-t-2",
+            "h-35 border-t-2",
             status === "correct" && "border-transparent bg-green-100",
             status === "wrong" && "border-transparent bg-rose-100"
         )}>

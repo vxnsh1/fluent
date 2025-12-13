@@ -6,6 +6,9 @@ import { Nunito } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 import { ExitModal } from "@/components/modals/exitmodal";
+import { HeartsModal } from "@/components/modals/heartsmodal";
+import { PracticeModal } from "@/components/modals/practicemodal";
+
 
 const font = Nunito({ subsets: ["latin"] });
 
@@ -25,6 +28,8 @@ export default function RootLayout({
         <body className={`${font.className} antialiased`}>
           <Toaster  />
           <ExitModal />
+          <HeartsModal />
+          <PracticeModal />
           {children}
         </body>
       </html>

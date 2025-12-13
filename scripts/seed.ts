@@ -97,21 +97,21 @@ const main = async () => {
         lessonId: 2,
         type: "SELECT",
         order: 1,
-        question: 'Which one of these is "the man"?',
+        question: 'Which one of these is "the bear"?',
       },
       {
         id: 5,
         lessonId: 2,
         type: "ASSIST",
         order: 2,
-        question: '"the woman"?',
+        question: '"the man"?',
       },
       {
         id: 6,
         lessonId: 2,
         type: "SELECT",
         order: 3,
-        question: 'Which one of these is "the bear"?',
+        question: 'Which one of these is "the woman"?',
       },
     ]);
 
@@ -197,7 +197,7 @@ const main = async () => {
       {
         challengeId: 4,
         imgSrc: "/man.svg",
-        correct: true,
+        correct: false,
         text: "आदमी",
         audioSrc: "/india_man.mp3",
       },
@@ -211,7 +211,7 @@ const main = async () => {
       {
         challengeId: 4,
         imgSrc: "/bear.svg",
-        correct: false,
+        correct: true,
         text: "भालू",
         audioSrc: "/india_bear.mp3",
       },
@@ -219,13 +219,13 @@ const main = async () => {
       // Challenge 5
       {
         challengeId: 5,
-        correct: false,
+        correct: true,
         text: "आदमी",
         audioSrc: "/india_man.mp3",
       },
       {
         challengeId: 5,
-        correct: true,
+        correct: false,
         text: "औरत",
         audioSrc: "/india_woman.mp3",
       },
@@ -247,14 +247,14 @@ const main = async () => {
       {
         challengeId: 6,
         imgSrc: "/woman.svg",
-        correct: false,
+        correct: true,
         text: "औरत",
         audioSrc: "/india_woman.mp3",
       },
       {
         challengeId: 6,
         imgSrc: "/bear.svg",
-        correct: true,
+        correct: false,
         text: "भालू",
         audioSrc: "/india_bear.mp3",
       },

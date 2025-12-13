@@ -2,7 +2,6 @@
 
 import { useState, useTransition } from "react";
 import { challengeOptions, challenges } from "../../../db/schema";
-import Confetti from "react-confetti"
 import { Header } from "./header";
 import { QuestionBubble } from "./questionbubble";
 import { Challenge } from "./challenge";
@@ -10,10 +9,12 @@ import { Footer } from "./footer";
 import { upsertChallengeProgress } from "../../../actions/challengeprogress";
 import { toast } from "sonner";
 import { reduceHearts } from "../../../actions/userprogress";
-import { useAudio } from "react-use";
+import { useAudio, useMount } from "react-use";
 import Image from "next/image";
 import { Result } from "./result";
 import { useRouter } from "next/navigation";
+import { useHeartsModal } from "../../../store/useheartsmodal";
+import { usePracticeModal } from "../../../store/usepracticemodal";
 
 type Props = {
   initialPercentage: number;
@@ -34,6 +35,14 @@ export const Quiz = ({
   initialLessonChallenges,
   userSubscription,
 }: Props) => {
+  const { open: openHeartsModal } = useHeartsModal();
+  const { open: openPracticeModal } = usePracticeModal();
+
+  useMount(() => {
+    if(initialPercentage === 100){
+      openPracticeModal();
+    }
+  })
   const router = useRouter();
   const [finishAudio] = useAudio({ src: "/finish.mp3", autoPlay: true});
   const [correctAudioElement, correctAudioState, correctControls] = useAudio({
@@ -46,20 +55,21 @@ export const Quiz = ({
   const [pending, startTransition] = useTransition();
   const [lessonId] = useState(initialLessonId);
   const [hearts, setHearts] = useState(initialHearts);
-  const [percentage, setPercentage] = useState(initialPercentage);
-  const [challenges] = useState(initialLessonChallenges);
+  const [percentage, setPercentage] = useState(() => {
+    return initialPercentage === 100 ? 0 : initialPercentage;
+  });
+  const [challenges] = useState(initialLessonChallenges); 
   const [activeIndex, setActiveIndex] = useState(() => {
     const incompletedIndex = challenges.findIndex(
       (challenge) => !challenge.completed
     );
     return incompletedIndex === -1 ? 0 : incompletedIndex;
   });
-
+  const challenge = challenges[activeIndex];
   const [selectedOption, setSelectedOption] = useState<number>();
   const [status, setStatus] = useState<"correct" | "wrong" | "none">("none");
 
-  const challenge = challenges[activeIndex];
-
+ 
   if (!challenge) {
     return (
       <>
@@ -139,7 +149,7 @@ export const Quiz = ({
         upsertChallengeProgress(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              console.error("Missing hearts");
+              openHeartsModal();
               return;
             }
 
@@ -158,7 +168,7 @@ export const Quiz = ({
         reduceHearts(challenge.id)
           .then((response) => {
             if (response?.error === "hearts") {
-              console.error("Missing hearts");
+              openHeartsModal();
               return;
             }
 
@@ -183,7 +193,7 @@ export const Quiz = ({
         percentage={percentage}
         hasActiveSubscription={!!userSubscription?.isActive}
       />
-      <div className="flex-1 max-md:h-[75vh]">
+      <div className="flex-1 max-md:h-[70vh] lg:h-[60vh]">
         <div className="h-full flex items-center justify-center">
           <div className="lg:min-h-87 lg:w-150 w-full px-10 lg:px-0 flex flex-col gap-y-12 md:mt-10 lg:mt-0 mb-10">
             <h1 className="text-lg lg:text-3xl lg:text-start font-bold text-center text-neutral-700">

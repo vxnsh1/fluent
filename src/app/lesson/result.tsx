@@ -6,7 +6,7 @@ type Props = {
     variant: "points" | "hearts",
 }
 export const Result = ({value, variant}: Props) => {
-    const src = variant === "hearts" ? "/hearts.svg" : "points.svg";
+    const src = variant === "hearts" ? "/hearts.svg" : "/points.svg";
     const width = variant === "hearts" ? "16" : "24";
     const height = variant === "hearts" ? "16" : "24"
   return (

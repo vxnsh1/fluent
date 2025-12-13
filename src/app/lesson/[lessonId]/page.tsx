@@ -1,9 +1,18 @@
 import { redirect } from "next/navigation";
-import { getLesson, getUserProgress } from "../../../db/queries";
-import { Quiz } from "./quiz";
+import { getLesson, getUserProgress } from "../../../../db/queries";
+import { Quiz } from "../quiz";
 
-const LessonPage = async () => {
-    const lessonData = getLesson();
+type Props = {
+    params: {
+        lessonId: number,
+    };
+};
+
+const LessonIdPage = async ({
+    params,
+}: Props) => {
+    const id = await params;
+    const lessonData = getLesson(id.lessonId);
     const userProgressData = getUserProgress();
 
     const [
@@ -16,7 +25,10 @@ const LessonPage = async () => {
 
     if (!lesson || !userProgress) redirect("/learn");
 
-    const initialPercentage = lesson.challenges.filter((challenge) => challenge.completed).length / lesson.challenges.length * 100;
+    const initialPercentage =
+    (lesson.challenges.filter((challenge) => challenge.completed).length /
+      lesson.challenges.length) *
+    100;
     return (
         <div className="h-full">
             <Quiz 
@@ -27,8 +39,9 @@ const LessonPage = async () => {
                 initialPercentage = {initialPercentage}
                 userSubscription = {null}
             />
+
         </div>
     )
 }
 
-export default LessonPage;
+export default LessonIdPage;
