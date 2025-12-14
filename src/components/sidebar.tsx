@@ -8,14 +8,23 @@ import {
     UserButton,
 
  } from "@clerk/nextjs";
-import { Button } from "./ui/button";
 import { Loader } from "lucide-react";
+import { getUserSubscription } from "../../db/queries";
 
 type Props = {
   className?: string
 };
 
-export const Sidebar = ({ className }: Props) => {
+
+
+export const Sidebar = async ({ className }: Props) => {
+    const userSubscriptionData = getUserSubscription();
+    const [
+      userSubscription,
+    ] = await Promise.all([
+      userSubscriptionData,
+    ]);
+
   const sidebarItems = [
     {
       label: "Learn",
@@ -44,7 +53,9 @@ export const Sidebar = ({ className }: Props) => {
     )}> <Link href='/learn'>
         <div className="pt-8 pl-4 pb-7 flex items-center gap-x-3">
           <Image src="/logo.svg" width="50" height="50" alt="logo"></Image>
-          <h1 className="text-2xl tracking-tighter font-bold ">Fluent</h1>
+          <h1 className="text-2xl tracking-tighter font-bold ">
+            {!!userSubscription?.isActive ? "Fluent Pro" : "Fluent"}
+          </h1>
         </div>
       </Link>
       <div className="flex flex-col gap-y-2 flex-1">

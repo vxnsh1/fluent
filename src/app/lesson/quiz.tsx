@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useTransition } from "react";
-import { challengeOptions, challenges } from "../../../db/schema";
+import { challengeOptions, challenges, userSubscription } from "../../../db/schema";
 import { Header } from "./header";
 import { QuestionBubble } from "./questionbubble";
 import { Challenge } from "./challenge";
@@ -24,7 +24,9 @@ type Props = {
     completed: boolean;
     challengeOptions: (typeof challengeOptions.$inferSelect)[];
   })[];
-  userSubscription: any;
+  userSubscription: typeof userSubscription.$inferSelect & {
+    isActive: boolean,
+  } | null;
   initialPoints: number;
 };
 
