@@ -169,7 +169,9 @@ How to Contribute
    ```
    
 5. Open a Pull Request and describe your changes. <br/> <br/>
-   Don’t forget to give the project a ⭐ if you like it!
+
+ ### Don’t forget to give the project a ⭐ if you like it!
+    ⚠️ Note: Stripe payments aren’t currently working for Indian users due to local restrictions.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
